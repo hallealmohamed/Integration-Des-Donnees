@@ -1,0 +1,150 @@
+    <?xml version="1.0" encoding="UTF-8"?>
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+        <xs:element name="Vente">
+            <xs:complexType>
+                <xs:sequence>
+                    <xs:element name="clients" type="ClientsType"/>
+                    <xs:element name="commandes" type="CommandesType"/>
+                    <xs:element name="produits" type="ProduitsType"/>
+                    <xs:element name="fournisseurs" type="FournisseursType"/>
+                    <xs:element name="factures" type="FacturesType"/>
+                    <xs:element name="paniers" type="PaniersType"/>
+                    <xs:element name="employes" type="EmployesType"/>
+                    <xs:element name="livraisons" type="LivraisonsType"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:element>
+
+        <!-- Clients -->
+        <xs:complexType name="ClientsType">
+            <xs:sequence>
+                <xs:element name="client" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="nom" type="xs:string"/>
+                            <xs:element name="courriel" type="xs:string"/>
+                            <xs:element name="telephone" type="xs:string" minOccurs="0"/>
+                        </xs:sequence>
+                        <xs:attribute name="id" type="xs:ID" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+
+        <!-- Commandes -->
+        <xs:complexType name="CommandesType">
+            <xs:sequence>
+                <xs:element name="commande" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="date" type="xs:string"/>
+                            <xs:element name="montant" type="xs:decimal"/>
+                            <xs:element name="statut" type="xs:string"/>
+                            <xs:element name="mode_paiement" type="xs:string"/>
+                        </xs:sequence>
+                        <xs:attribute name="id" type="xs:ID" use="required"/>
+                        <xs:attribute name="clientID" type="xs:IDREF" use="required"/>
+                        <xs:attribute name="employeID" type="xs:IDREF"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+
+        <!-- Paniers -->
+        <xs:complexType name="PaniersType">
+            <xs:sequence>
+                <xs:element name="panier" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="nombre" type="xs:int"/>
+                        </xs:sequence>
+                        <xs:attribute name="id_commande" type="xs:IDREF" use="required"/>
+                        <xs:attribute name="id_produit" type="xs:IDREF" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+
+        <!-- Produits -->
+        <xs:complexType name="ProduitsType">
+            <xs:sequence>
+                <xs:element name="produit" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="description" type="xs:string"/>
+                            <xs:element name="prix" type="xs:decimal"/>
+                            <xs:element name="categorie" type="xs:string"/>
+                            <xs:element name="quantite_totale" type="xs:int"/>
+                        </xs:sequence>
+                        <xs:attribute name="id" type="xs:ID" use="required"/>
+                        <xs:attribute name="id_fournisseur" type="xs:IDREF" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+
+        <!-- Fournisseurs -->
+        <xs:complexType name="FournisseursType">
+            <xs:sequence>
+                <xs:element name="fournisseur" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="nom" type="xs:string"/>
+                            <xs:element name="telephone" type="xs:string" minOccurs="0"/>
+                            <xs:element name="adresse" type="xs:string" minOccurs="0"/>
+                        </xs:sequence>
+                        <xs:attribute name="id" type="xs:ID" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+
+        <!-- Factures -->
+        <xs:complexType name="FacturesType">
+            <xs:sequence>
+                <xs:element name="facture" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="montant" type="xs:decimal"/>
+                            <xs:element name="date" type="xs:string"/>
+                        </xs:sequence>
+                        <xs:attribute name="id" type="xs:ID" use="required"/>
+                        <xs:attribute name="commandeID" type="xs:IDREF" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+
+        <!-- Livraisons -->
+        <xs:complexType name="LivraisonsType">
+            <xs:sequence>
+                <xs:element name="livraison" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="transporteur" type="xs:string"/>
+                            <xs:element name="statut" type="xs:string"/>
+                        </xs:sequence>
+                        <xs:attribute name="id" type="xs:ID" use="required"/>
+                        <xs:attribute name="commandeID" type="xs:IDREF" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+
+        <!-- Employés -->
+        <xs:complexType name="EmployesType">
+            <xs:sequence>
+                <xs:element name="employe" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="nom" type="xs:string"/>
+                            <xs:element name="email" type="xs:string"/>
+                        </xs:sequence>
+                        <xs:attribute name="id" type="xs:ID" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+
+    </xs:schema>

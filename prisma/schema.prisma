@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql" // Change to "postgresql" or "sqlite" if needed
+  url      = env("DATABASE_URL")
+}
+
+model Agence {
+  id_agence       Int       @id @default(autoincrement())
+  ville          String
+  adresse        String
+  responsable_ref Int?
+  Employes       Employe[]
+}
+
+model Employe {
+  id_employe  Int     @id @default(autoincrement())
+  nom_complet String
+  email       String
+  poste       String
+  agence_ref  Int?
+  agence      Agence? @relation(fields: [agence_ref], references: [id_agence])
+  Commandes   Commande[]
+}
+
+model Client {
+  id_client        Int      @id @default(autoincrement())
+  nom_complet      String
+  adresse          String
+  email_contact    String
+  numero_telephone String
+  Commandes        Commande[]
+}
+
+model Produit {
+  id_produit   Int               @id @default(autoincrement())
+  description  String
+  prix_cout    Float
+  categorie    String
+  Details      Details_Commande[]
+  Approvisionnement Approvisionnement[]
+}
+
+model Fournisseur {
+  id_fournisseur  Int    @id @default(autoincrement())
+  nom_fournisseur String
+  numero_telephone String
+  adresse         String
+  Approvisionnement Approvisionnement[]
+}
+
+model Approvisionnement {
+  id_produit    Int
+  id_fournisseur Int
+  Quantite      Int
+
+  produit      Produit     @relation(fields: [id_produit], references: [id_produit])
+  fournisseur  Fournisseur @relation(fields: [id_fournisseur], references: [id_fournisseur])
+
+  @@id([id_produit, id_fournisseur])
+}
+
+model Commande {
+  id_commande   Int      @id @default(autoincrement())
+  date_commande DateTime
+  montant       Decimal
+  statut        String
+  mode_paiement String
+  client_ref    Int?
+  employe_ref   Int?
+  client        Client?  @relation(fields: [client_ref], references: [id_client])
+  employe       Employe? @relation(fields: [employe_ref], references: [id_employe])
+  Details       Details_Commande[]
+  Facture       Facture?
+  Livraison     Livraison?
+}
+
+model Details_Commande {
+  id_commande  Int
+  id_produit   Int
+  Quantite     Int
+
+  commande     Commande @relation(fields: [id_commande], references: [id_commande])
+  produit      Produit  @relation(fields: [id_produit], references: [id_produit])
+
+  @@id([id_commande, id_produit])
+}
+
+model Facture {
+  id_facture    Int     @id @default(autoincrement())
+  montant_total Decimal
+  date_facture  DateTime
+  commande_ref  Int     @unique
+  commande      Commande @relation(fields: [commande_ref], references: [id_commande])
+}
+
+model Livraison {
+  id_livraison Int     @id @default(autoincrement())
+  transporteur String
+  date_estimee DateTime
+  statut       String
+  commande_ref Int     @unique
+  commande     Commande @relation(fields: [commande_ref], references: [id_commande])
+}
