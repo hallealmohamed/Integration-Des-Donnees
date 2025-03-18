@@ -1,0 +1,201 @@
+CREATE VIEW Client_Global AS
+SELECT id_client AS id, 
+       nom_complet AS nom, 
+       adresse, 
+       email_contact AS email, 
+       numero_telephone AS telephone
+FROM Clients
+UNION
+SELECT id AS id, 
+       nom AS nom, 
+       adresse, 
+       courriel AS email, 
+       telephone
+FROM XML_Clients
+UNION
+SELECT id_client AS id, 
+       nom AS nom, 
+       adresse, 
+       email, 
+       téléphone AS telephone
+FROM Graph_Clients;
+CREATE VIEW Employe_Global AS
+SELECT id_employe AS id, 
+       nom_complet AS nom, 
+       email, 
+       poste, 
+       salaire, 
+       agence_ref AS agenceID
+FROM Employes
+UNION
+SELECT id AS id, 
+       nom AS nom, 
+       email, 
+       poste, 
+       salaire, 
+       agenceID
+FROM XML_Employes
+UNION
+SELECT id_employe AS id, 
+       nom AS nom, 
+       email, 
+       poste, 
+       salaire, 
+       agence_ref AS agenceID
+FROM Graph_Employes;
+CREATE VIEW Agence_Global AS
+SELECT id_agence AS id, 
+       ville, 
+       adresse, 
+       responsable_ref AS responsableID
+FROM Agences
+UNION
+SELECT id AS id, 
+       ville, 
+       adresse, 
+       responsableID
+FROM XML_Agences
+UNION
+SELECT id_agence AS id, 
+       ville, 
+       adresse, 
+       responsable_ref AS responsableID
+FROM Graph_Agences;
+CREATE VIEW Fournisseur_Global AS
+SELECT id_fournisseur AS id, 
+       nom_fournisseur AS nom, 
+       numero_telephone AS telephone, 
+       adresse
+FROM Fournisseurs
+UNION
+SELECT id AS id, 
+       nom AS nom, 
+       telephone, 
+       adresse
+FROM XML_Fournisseurs
+UNION
+SELECT id_fournisseur AS id, 
+       nom AS nom, 
+       téléphone AS telephone, 
+       adresse
+FROM Graph_Fournisseurs;
+CREATE VIEW Produit_Global AS
+SELECT id_produit AS id, 
+       description, 
+       prix_cout AS prix, 
+       categorie, 
+       quantite_totale AS quantite, 
+       id_fournisseur AS fournisseurID
+FROM Produits
+UNION
+SELECT id AS id, 
+       description, 
+       prix, 
+       categorie, 
+       quantite, 
+       id_fournisseur AS fournisseurID
+FROM XML_Produits
+UNION
+SELECT id_produit AS id, 
+       description, 
+       prix, 
+       categorie, 
+       quantite_totale AS quantite, 
+       id_fournisseur AS fournisseurID
+FROM Graph_Produits;
+CREATE VIEW Commande_Global AS
+SELECT id_commande AS id, 
+       date_commande AS date, 
+       montant, 
+       statut, 
+       mode_paiement, 
+       client_ref AS clientID, 
+       employe_ref AS employeID
+FROM Commandes
+UNION
+SELECT id AS id, 
+       date, 
+       montant, 
+       statut, 
+       mode_paiement, 
+       clientID, 
+       employeID
+FROM XML_Commandes
+UNION
+SELECT id_commande AS id, 
+       date, 
+       montant, 
+       statut, 
+       mode_paiement, 
+       client_ref AS clientID, 
+       employe_ref AS employeID
+FROM Graph_Commandes;
+CREATE VIEW Details_Commande_Global AS
+SELECT id_commande AS commandeID, 
+       id_produit AS produitID, 
+       quantite
+FROM Details_Commande
+UNION
+SELECT commandeID, 
+       produitID, 
+       quantite
+FROM XML_Details_Commande
+UNION
+SELECT id_commande AS commandeID, 
+       id_produit AS produitID, 
+       quantite
+FROM Graph_Details_Commande;
+CREATE VIEW Facture_Global AS
+SELECT id_facture AS id, 
+       montant_total AS montant, 
+       date_facture AS date, 
+       commande_ref AS commandeID
+FROM Factures
+UNION
+SELECT id AS id, 
+       montant, 
+       date, 
+       commandeID
+FROM XML_Factures
+UNION
+SELECT id_facture AS id, 
+       montant_total AS montant, 
+       date_facture AS date, 
+       commande_ref AS commandeID
+FROM Graph_Factures;
+CREATE VIEW Livraison_Global AS
+SELECT id_livraison AS id, 
+       transporteur, 
+       date_estimee, 
+       statut, 
+       commande_ref AS commandeID
+FROM Livraisons
+UNION
+SELECT id AS id, 
+       transporteur, 
+       date_estimee, 
+       statut, 
+       commandeID
+FROM XML_Livraisons
+UNION
+SELECT id_livraison AS id, 
+       transporteur, 
+       date_estimee, 
+       statut, 
+       commande_ref AS commandeID
+FROM Graph_Livraisons;
+CREATE VIEW Approvisionnement_Global AS
+SELECT id_produit AS produitID, 
+       id_fournisseur AS fournisseurID, 
+       quantite
+FROM Approvisionnement
+UNION
+SELECT produitID, 
+       fournisseurID, 
+       quantite
+FROM XML_Approvisionnement
+UNION
+SELECT id_produit AS produitID, 
+       id_fournisseur AS fournisseurID, 
+       quantite
+FROM Graph_Approvisionnement;
